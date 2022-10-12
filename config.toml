@@ -1,0 +1,14 @@
+# baseURL = 'http://example.org/'
+RelativeURLs=true
+CanonifyURLs=true
+languageCode = 'en-us'
+title = 'AWS China Partner Workshop'
+
+# Change the default theme to be use when building the site with Hugo
+theme = "hugo-theme-learn"
+
+# For search functionality
+[outputs]
+home = [ "HTML", "RSS", "JSON"]
+
+
