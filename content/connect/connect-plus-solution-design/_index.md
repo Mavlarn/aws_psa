@@ -5,6 +5,7 @@ description : "Amazon Connect++ 解决方案设计"
 date: 2022-10-14T11:13:17+08:00
 date: 2022-10-14T11:13:17+08:00
 weight: 3
+draft: true
 
 tags : [                                    
 "Amazon Connect", "Solution", "SAML"
