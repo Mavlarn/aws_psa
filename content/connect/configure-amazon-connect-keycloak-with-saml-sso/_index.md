@@ -30,6 +30,8 @@ Amazon Connect 支持集中用户认证，1) 内置的用户系统 2) Active Dir
 
 在本文中，我们将介绍如何使用 Keycloak 作为认证服务，通过 SAML 协议为 Amazon Connect 提供单点登录功能。
 
+如果想要使用 Okta、Azure AD 等认证服务器，请参考 [Amazon Connect SSO Setup Workshop](https://catalog.workshops.aws/amazon-connect-sso/en-US)。
+
 ## Keycloak 与 SAML
 
 ### Keycloak

@@ -1,10 +1,10 @@
 +++
-title = "Blogs"
+title = "Amazon Connect"
 chapter = true
-weight = 5
+weight = 2
 +++
 
-## 我的 Blogs
+## Amazon Connect 系列
 
 # Amazon Connect
 

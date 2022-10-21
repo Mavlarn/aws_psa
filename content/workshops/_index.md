@@ -1,7 +1,7 @@
 +++
 title = "Amazon Connect workshop"
 chapter = true
-weight = 1
+weight = 10
 +++
 
 ## Amazon Connect workshop

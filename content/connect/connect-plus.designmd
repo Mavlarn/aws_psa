@@ -1,0 +1,93 @@
+# SmartOOP
+
+## 架构
+
+### 后端
+1. 后端每个功能使用 Lambda + API 来实现
+2. 管理或操作 AWS 服务如 Connect，Comprehend
+    等也在 Lambda中操作，并用API Gateway提供Rest API
+
+### 前端
+
+1. 前端使用 VUE 实现纯前端应用
+2. 所有操作都通过Lambda实现，并用API Gateway提供Rest API暴露
+3. 没有使用Amplify，而直接使用 jssdk
+4. 使用Keycloak SAML 实现 SSO，不用Cognito
+
+
+## Auth
+### SSO with SAML
+
+#### Keycloak and SAML
+1. 配置 connect client
+2. 配置前端应用 client
+
+#### 使用 SAML user Role 访问后台所有服务
+1. Amazon Connect
+2. DDB tables：messages，agents，customers
+
+### UserGroups
+1. Admin
+2. Manager
+3. Agent
+
+## REST API
+
+### Agent
+1. createAgent
+2. updateAgent
+3. deleteAgent
+4. listAgent
+
+### Customer
+
+### Messages
+
+1. listMessage
+2. getOneMessage
+3. replyMessage
+
+### Task
+
+### Case
+
+
+# SA Org
+
+## Observation
+Connect needs much work to use Connect
+ * implement flow in connect
+ * implement multi-channels
+ * integrate with CRM
+ * integrate with SSO
+
+1. for customers:
+provide a out-of-box solution for DNB/SMB customers
+
+2. for DBs
+ * understand the features of connect with demo
+ * sale with demo
+
+3. for partners
+ * enable partner with the demo and doc, they can develop their product based on this
+ * Customer acquisition: Partner can use it for demo (合作伙伴目前没有成熟的集成Connect的产品，可以用这个solution包装成他们自己的方案，用于获客)
+
+
+## Target
+
+1. Smart Contact Center partners
+ * 智齿，天润，五岳科技，BroadCom
+
+2. Partners related with customer，marketing
+ * bluelinksys（Salesforce）
+ * CDP（ConvertLab，驰骛）campaign outbound call with connect
+
+## Activity 
+
+## Result
+
+
+# logs
+
+### Channel related
+https://github.com/aws-samples/amazon-connect-email-tasks
