@@ -1,0 +1,264 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.105.0"><meta name=description content="使用 Amazon Pinpoint 的Custom Channel给用户发送 Whatsapp 消息"><link rel=icon href=../../images/favicon.png type=image/png><title>使用 Amazon Pinpoint 的Custom Channel给用户发送 Whatsapp 消息 :: AWS China Partner Workshop</title><link href=../../css/nucleus.css?1667984276 rel=stylesheet><link href=../../css/fontawesome-all.min.css?1667984276 rel=stylesheet><link href=../../css/hybrid.css?1667984276 rel=stylesheet><link href=../../css/featherlight.min.css?1667984276 rel=stylesheet><link href=../../css/perfect-scrollbar.min.css?1667984276 rel=stylesheet><link href=../../css/auto-complete.css?1667984276 rel=stylesheet><link href=../../css/atom-one-dark-reasonable.css?1667984276 rel=stylesheet><link href=../../css/theme.css?1667984276 rel=stylesheet><link href=../../css/tabs.css?1667984276 rel=stylesheet><link href=../../css/hugo-theme.css?1667984276 rel=stylesheet><script src=../../js/jquery-3.3.1.min.js?1667984276></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style></head><body data-url=../../pinpoint/customer-engagement-using-amazon-pinpoint-custom-channel/><nav id=sidebar><div id=header-wrapper><div id=header><div><a href=../../ title="Go home"><img style=vertical-align:middle src=../../images/logo.png height=70px></a></div></div><div class=searchbox><label for=search-by><i class="fas fa-search"></i></label>
+<input data-search-input id=search-by type=search placeholder=Search...>
+<span data-search-clear><i class="fas fa-times"></i></span></div><script type=text/javascript src=../../js/lunr.min.js?1667984276></script>
+<script type=text/javascript src=../../js/auto-complete.js?1667984276></script>
+<script type=text/javascript>var baseurl=""</script><script type=text/javascript src=../../js/search.js?1667984276></script></div><section id=homelinks><ul><li><a class=padding href=../../><i class='fas fa-home'></i> Home</a></li></ul></section><div class=highlightable><ul class=topics><li data-nav-id=/connect/ title="Amazon Connect" class=dd-item><a href=../../connect/>Amazon Connect</a><ul><li data-nav-id=/connect/configure-amazon-connect-keycloak-with-saml-sso/ title="配置Amazon Connect使用Keycloak SAML进行单点登录" class=dd-item><a href=../../connect/configure-amazon-connect-keycloak-with-saml-sso/>配置Amazon Connect使用Keycloak SAML进行单点登录</a></li><li data-nav-id=/connect/configure-amazon-connect-and-authing-with-saml-sso/ title="配置Amazon Connect使用 Authing SAML进行单点登录" class=dd-item><a href=../../connect/configure-amazon-connect-and-authing-with-saml-sso/>配置Amazon Connect使用 Authing SAML进行单点登录</a></li><li data-nav-id=/connect/post-review-with-contact-flow/ title="Amazon Connect实现客户评分反馈" class=dd-item><a href=../../connect/post-review-with-contact-flow/>Amazon Connect实现客户评分反馈</a></li></ul></li><li data-nav-id=/gaming/ title="Amazon GameTech" class=dd-item><a href=../../gaming/>Amazon GameTech</a></li><li data-nav-id=/workshops/ title="Amazon Connect workshop" class=dd-item><a href=../../workshops/>Amazon Connect workshop</a></li><li data-nav-id=/pinpoint/ title=Pinpoints class="dd-item
+parent"><a href=../../pinpoint/>Pinpoints</a><ul><li data-nav-id=/pinpoint/customer-engagement-using-amazon-pinpoint-custom-channel/ title="使用 Amazon Pinpoint 的Custom Channel给用户发送 Whatsapp 消息" class="dd-item
+active"><a href=../../pinpoint/customer-engagement-using-amazon-pinpoint-custom-channel/>使用 Amazon Pinpoint 的Custom Channel给用户发送 Whatsapp 消息</a></li></ul></li></ul><section id=footer><left><h5 class=copyright>&copy; 2022 Amazon Web Services, Inc. or its Affiliates. All rights reserved.<h5><h5>@Author Mavlarn<h5></left></section></div></nav><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=breadcrumbs itemscope itemtype=http://data-vocabulary.org/Breadcrumb><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i></a></span>
+<span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links><a href=../../></a> > <a href=../../pinpoint/>Pinpoints</a> > 使用 Amazon Pinpoint 的Custom Channel给用户发送 Whatsapp 消息</span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#amazon-pinpoint-用户触达>Amazon Pinpoint 用户触达</a></li><li><a href=#场景描述和前提>场景描述和前提</a><ul><li><a href=#创建并配置-whatsapp>创建并配置 Whatsapp</a></li><li><a href=#获取-app-token>获取 app token</a></li><li><a href=#创建-template>创建 template</a></li></ul></li><li><a href=#实现-lambda>实现 Lambda</a><ul><li><a href=#pinpoint-消息格式>Pinpoint 消息格式</a></li><li><a href=#传递消息参数>传递消息参数</a></li><li><a href=#保存-facebook-token-和-phone-number-id>保存 Facebook token 和 Phone number ID</a></li><li><a href=#indexjs-完整代码>index.js 完整代码</a></li><li><a href=#创建-pinpoint-app-和-endpoint>创建 pinpoint app 和 Endpoint</a></li><li><a href=#设置权限>设置权限</a></li></ul></li><li><a href=#通过-console-创建-campaign-测试>通过 Console 创建 Campaign 测试</a></li><li><a href=#通过-api-测试>通过 API 测试</a></li></ul></nav></div></div></div></div><div id=head-tags><div class=tags><a class=tag-link href=../../tags/amazon-pinpoint>Amazon Pinpoint</a>
+<a class=tag-link href=../../tags/endpoint>Endpoint</a>
+<a class=tag-link href=../../tags/channel>Channel</a></div></div><div id=body-inner><h1>使用 Amazon Pinpoint 的Custom Channel给用户发送 Whatsapp 消息</h1><h2 id=amazon-pinpoint-用户触达>Amazon Pinpoint 用户触达</h2><p>Amazon Pinpoint 通常用来通过 SMS 以及邮件的方式来给用户发通知，我们可以创建 Campaign，来动态的给圈选的用户在指定的时间、或某个事件发生的情况下，给用户发送指定模板的消息。更复杂的，我们还可以创建用户旅程的流程，来给用户发消息。</p><p>除了 SMS 和邮件，Pinpoint 还提供了 Push-notification，in-app messaging 的消息，我们甚至还可以通过 Lambda 还创建自定义的消息渠道。本文我们就来看一下如何使用 Lambda 创建自定义的渠道（custom channel）并使用它来发送消息给用户。</p><h2 id=场景描述和前提>场景描述和前提</h2><p>本文中，我们希望给用户的 Whatsapp 账号发送消息，实现原理实际上就是在 Lambda 函数内通过调用 Whatsapp 的 API 来发消息。这就需要几个前提：</p><h3 id=创建并配置-whatsapp>创建并配置 Whatsapp</h3><p>Whatsapp 是 Facebook 旗下的产品，它提供 Business Platform API，可以用来直接发送 WhatsApp 消息，而无需通过类似 Twilio 这样的服务。开通和配置的过程不是本文的内容，这里就不做说明。我们需要能够通过 API 调用来发消息。配置完成后，可以同下面的页面来测试：</p><p><img src=1-WhatsApp-test-send-msg.jpg alt></p><p>它通过临时的 Token 使用 API 发消息；这里的 <em>Phone number ID</em> 是我们的注册的 Business 账号下使用的电话的 Id；<em>To</em> 就是我们要发送消息的对象。</p><p>发送消息后，我们就可以在网页版的 WhatsApp 应用，或手机应用上看到收到的测试消息。</p><p><img src=2-WhatsApp-receive-test-msg.jpg alt></p><p>验证消息接收无误以后，就可以使用 API 调用发送消息了。</p><h3 id=获取-app-token>获取 app token</h3><p>从上面的测试接口页面，我们可以知道测试接口需要几个参数：</p><ul><li>token： 即 Facebook app token，在 Facebook business platform 创建，需要保证这个token具有 WhatsApp api的权限。</li><li>Phone number ID：即发消息的账号的Id。</li></ul><h3 id=创建-template>创建 template</h3><p>根据 WhatsApp 的机制，我们需要先创建一个消息模板，然后使用该模板发送消息。所以我们需要创建一个 template：</p><p><img src=3-WhatsApp-msg-template.jpg alt></p><p>该消息的内容为： <em>Hi {{1}}, the {{2}} in your order is not paid yet. Go to pay the order and get extra points!</em>。使用两个变量用来替换消息的内容，实现定制。右侧是消息的展示效果。</p><h2 id=实现-lambda>实现 Lambda</h2><h3 id=pinpoint-消息格式>Pinpoint 消息格式</h3><p>接下来，我们创建一个 lambda 函数，可以使用 AWS 控制台创建一个空的、NodeJs16 版本 Lambda，index.js 的内容如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=display:flex><span><span style=color:#a6e22e>exports</span>.<span style=color:#a6e22e>handler</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>async</span> (<span style=color:#a6e22e>event</span>) =&gt; {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#39;Event&#39;</span>, <span style=color:#a6e22e>event</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>event</span>.<span style=color:#a6e22e>Endpoints</span> <span style=color:#f92672>===</span> <span style=color:#66d9ef>undefined</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>errorText</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;Unsupported event type. event. Endpoints not defined.&#39;</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>error</span>(<span style=color:#a6e22e>errorText</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error(<span style=color:#a6e22e>errorText</span>)
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>endpoints</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>event</span>.<span style=color:#a6e22e>Endpoints</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>endpointId</span> <span style=color:#66d9ef>in</span> <span style=color:#a6e22e>endpoints</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>endpoint</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>endpoints</span>[<span style=color:#a6e22e>endpointId</span>]
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>phoneId</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>endpoint</span>.<span style=color:#a6e22e>Address</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>customMessage</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>JSON</span>.<span style=color:#a6e22e>parse</span>(<span style=color:#a6e22e>event</span>.<span style=color:#a6e22e>Data</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>templateName</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>customMessage</span>.<span style=color:#a6e22e>templateName</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>templateParams</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>customMessage</span>.<span style=color:#a6e22e>params</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>sendWhatsAppTemplateMessage</span>(<span style=color:#a6e22e>phoneId</span>, <span style=color:#a6e22e>templateName</span>, <span style=color:#a6e22e>templateParams</span>)
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这只是一个处理函数，具体发消息的方法下面再说。Pinpoint 使用定制渠道发送消息的时候，消息的格式如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;Message&#34;</span>:{},
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;Data&#34;</span>:<span style=color:#e6db74>&#34;The payload that&#39;s provided in the CustomMessage object in MessageConfiguration&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;ApplicationId&#34;</span>:<span style=color:#e6db74>&#34;3a9b1f4e6c764ba7b031e7183example&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;CampaignId&#34;</span>:<span style=color:#e6db74>&#34;13978104ce5d6017c72552257example&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;TreatmentId&#34;</span>:<span style=color:#e6db74>&#34;0&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;ActivityId&#34;</span>:<span style=color:#e6db74>&#34;575cb1929d5ba43e87e2478eeexample&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;ScheduledTime&#34;</span>:<span style=color:#e6db74>&#34;2022-10-08T19:00:16.843Z&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;Endpoints&#34;</span>:{
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;1dbcd396df28ac6cf8c1c2b7fexample&#34;</span>:{
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;ChannelType&#34;</span>:<span style=color:#e6db74>&#34;EMAIL&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;Address&#34;</span>:<span style=color:#e6db74>&#34;mary.major@example.com&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;EndpointStatus&#34;</span>:<span style=color:#e6db74>&#34;ACTIVE&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;OptOut&#34;</span>:<span style=color:#e6db74>&#34;NONE&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;Location&#34;</span>:{
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;City&#34;</span>:<span style=color:#e6db74>&#34;Seattle&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;Country&#34;</span>:<span style=color:#e6db74>&#34;USA&#34;</span>
+</span></span><span style=display:flex><span>      },
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;Demographic&#34;</span>:{
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;Make&#34;</span>:<span style=color:#e6db74>&#34;OnePlus&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;Platform&#34;</span>:<span style=color:#e6db74>&#34;android&#34;</span>
+</span></span><span style=display:flex><span>      },
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;EffectiveDate&#34;</span>:<span style=color:#e6db74>&#34;2022-10-01T01:05:17.267Z&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;Attributes&#34;</span>:{
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;CohortId&#34;</span>:[
+</span></span><span style=display:flex><span>          <span style=color:#e6db74>&#34;42&#34;</span>
+</span></span><span style=display:flex><span>        ]
+</span></span><span style=display:flex><span>      },
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;CreationDate&#34;</span>:<span style=color:#e6db74>&#34;2022-10-01T01:05:17.267Z&#34;</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>每个事件参数中会有一个 <em>Endpoints</em> 的对象，它保存要发送消息的目标端点，其中 key 就是 <em>EndpointId</em>，值就是这个端点的详情，在这个消息内容中，它使用 Email 发消息，目标地址是 <em><a href=mailto:mary.major@example.com>mary.major@example.com</a></em>。在本实例中，我们要发送 WhatsApp 消息，所以我们会给用户创建一个 <em>WhatsApp</em> 类型的 <em>Endpoint</em>，而它的 address 就是 WhatsApp 的手机号。</p><h3 id=传递消息参数>传递消息参数</h3><p>在使用 Pinpoint 发消息时，定制消息的内容放在 <em>event.Data</em> 中，而在这个数据中，我们将模板名和数据都放在这里，这样我们就可以使用同一个 Lambda 的函数，发送多种模板类型的消息。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>customMessage</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>JSON</span>.<span style=color:#a6e22e>parse</span>(<span style=color:#a6e22e>event</span>.<span style=color:#a6e22e>Data</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>templateName</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>customMessage</span>.<span style=color:#a6e22e>templateName</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>templateParams</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>customMessage</span>.<span style=color:#a6e22e>params</span>
+</span></span></code></pre></div><h3 id=保存-facebook-token-和-phone-number-id>保存 Facebook token 和 Phone number ID</h3><p>还有，我们要掉用 Facebook 的 API，还需要使用 token，而这个 token 一般都需要加密保存，所以我们使用 AWS 的 <em>Secret Manager</em> 服务，创建一个加密的对象来存储，然后在 Lambda 函数中获取这个值，这样就能安全的使用这个token。</p><p>所以，我们打开 Secret Manager Console 界面，<em>Store a new secret</em>，选择 <em>Other type of secret</em>，以 <em>FB_APP_TOKEN</em> 为 key（在代码中要使用这个key来获取token），值就是 Facebook 里面的 token。</p><p><img src=4-secret-manager-for-token.jpg alt></p><p>保存之后，我们需要在 Lambda 中得到这个 token 的值，通常的做法是在 Lambda 中创建一个环境变量，将刚才在 Secret Manager 里创建的安全对象的 ARN 值设置到这个环境变量的值。</p><p>所以我们打开 Lambda 的配置界面，按如下方式配置环境变量。</p><p><img src=5-lambda-env-config.jpg alt></p><p>由于我们在 lambda 中使用这个环境变量的 key 来获取他的值，所以需要使用 <em>FB_BUSINESS_PHONE_ID</em> 和 <em>FB_SECRET_ARN</em> 作为key。</p><h3 id=indexjs-完整代码>index.js 完整代码</h3><p>下面，就是js中所有的代码，包括处理人口以及发送 WhatsApp 消息的代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#a6e22e>onst</span> <span style=color:#a6e22e>https</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;https&#39;</span>)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>AWS</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;aws-sdk&#39;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>BUSINESS_PHONE_ID</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>process</span>.<span style=color:#a6e22e>env</span>.<span style=color:#a6e22e>FB_BUSINESS_PHONE_ID</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>PATH_WHATSAPP</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;/v14.0/&#39;</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>BUSINESS_PHONE_ID</span> <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;/messages&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>appToken</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>secretManager</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>AWS</span>.<span style=color:#a6e22e>SecretsManager</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>sendWhatsAppTemplateMessage</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>async</span> (<span style=color:#a6e22e>phoneId</span>, <span style=color:#a6e22e>templateName</span>, <span style=color:#a6e22e>templateParams</span>) =&gt; {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>appToken</span> <span style=color:#f92672>===</span> <span style=color:#66d9ef>undefined</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>getFacebookSecrets</span>()
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>body</span> <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>messaging_product</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;whatsapp&#39;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>recipient_type</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;individual&#39;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>to</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>phoneId</span>,
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>type</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;template&#39;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>template</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>name</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>templateName</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>language</span><span style=color:#f92672>:</span> { <span style=color:#a6e22e>code</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;en_US&#34;</span> },
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>components</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>templateParams</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#39;Send FB WhatsApp body&#39;</span>, <span style=color:#a6e22e>body</span>)
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>headers</span> <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>Authorization</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;Bearer &#39;</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>appToken</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;Content-Type&#39;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;application/json&#39;</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>options</span> <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>host</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;graph.facebook.com&#39;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>path</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>PATH_WHATSAPP</span>,
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>method</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;POST&#39;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>headers</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>result</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> <span style=color:#66d9ef>new</span> Promise((<span style=color:#a6e22e>resolve</span>, <span style=color:#a6e22e>reject</span>) =&gt; {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>req</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>https</span>.<span style=color:#a6e22e>request</span>(<span style=color:#a6e22e>options</span>, (<span style=color:#a6e22e>res</span>) =&gt; {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>responseBody</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;</span>
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>on</span>(<span style=color:#e6db74>&#39;data&#39;</span>, (<span style=color:#a6e22e>chunk</span>) =&gt; {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>responseBody</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>chunk</span>
+</span></span><span style=display:flex><span>      })
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>on</span>(<span style=color:#e6db74>&#39;end&#39;</span>, () =&gt; {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>resolve</span>(<span style=color:#a6e22e>responseBody</span>)
+</span></span><span style=display:flex><span>      })
+</span></span><span style=display:flex><span>    })
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>on</span>(<span style=color:#e6db74>&#39;error&#39;</span>, (<span style=color:#a6e22e>err</span>) =&gt; {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>error</span>(<span style=color:#e6db74>&#39;Error sending FB WhatsApp message&#39;</span>, <span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>reject</span>(<span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>    })
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>write</span>(<span style=color:#a6e22e>JSON</span>.<span style=color:#a6e22e>stringify</span>(<span style=color:#a6e22e>body</span>))
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>end</span>()
+</span></span><span style=display:flex><span>  })
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>resultObj</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>JSON</span>.<span style=color:#a6e22e>parse</span>(<span style=color:#a6e22e>result</span>)
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#39;Send FB WhatsApp Message result&#39;</span>, <span style=color:#a6e22e>result</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>resultObj</span>.<span style=color:#a6e22e>error</span> <span style=color:#f92672>!==</span> <span style=color:#66d9ef>undefined</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>error</span>(<span style=color:#e6db74>&#39;Error sending FB WhatsApp message&#39;</span>, <span style=color:#a6e22e>resultObj</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>getFacebookSecrets</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>async</span> () =&gt; {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>process</span>.<span style=color:#a6e22e>env</span>.<span style=color:#a6e22e>FB_SECRET_ARN</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>params</span> <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>SecretId</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>process</span>.<span style=color:#a6e22e>env</span>.<span style=color:#a6e22e>FB_SECRET_ARN</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>response</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>secretManager</span>.<span style=color:#a6e22e>getSecretValue</span>(<span style=color:#a6e22e>params</span>).<span style=color:#a6e22e>promise</span>()
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>sec</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>JSON</span>.<span style=color:#a6e22e>parse</span>(<span style=color:#a6e22e>response</span>.<span style=color:#a6e22e>SecretString</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>appToken</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>sec</span>.<span style=color:#a6e22e>FB_APP_TOKEN</span>
+</span></span><span style=display:flex><span>  } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>appToken</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>exports</span>.<span style=color:#a6e22e>handler</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>async</span> (<span style=color:#a6e22e>event</span>) =&gt; {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#39;Event&#39;</span>, <span style=color:#a6e22e>event</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>event</span>.<span style=color:#a6e22e>Endpoints</span> <span style=color:#f92672>===</span> <span style=color:#66d9ef>undefined</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>errorText</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;Unsupported event type. event. Endpoints not defined.&#39;</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>error</span>(<span style=color:#a6e22e>errorText</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error(<span style=color:#a6e22e>errorText</span>)
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>endpoints</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>event</span>.<span style=color:#a6e22e>Endpoints</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>endpointId</span> <span style=color:#66d9ef>in</span> <span style=color:#a6e22e>endpoints</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>endpoint</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>endpoints</span>[<span style=color:#a6e22e>endpointId</span>]
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>phoneId</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>endpoint</span>.<span style=color:#a6e22e>Address</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>customMessage</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>JSON</span>.<span style=color:#a6e22e>parse</span>(<span style=color:#a6e22e>event</span>.<span style=color:#a6e22e>Data</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>templateName</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>customMessage</span>.<span style=color:#a6e22e>templateName</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>templateParams</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>customMessage</span>.<span style=color:#a6e22e>params</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>sendWhatsAppTemplateMessage</span>(<span style=color:#a6e22e>phoneId</span>, <span style=color:#a6e22e>templateName</span>, <span style=color:#a6e22e>templateParams</span>)
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=创建-pinpoint-app-和-endpoint>创建 pinpoint app 和 Endpoint</h3><p>为了测试，我们还需要在 Pinpoint 中创建一个项目，并记录下项目的 Id 备用。然后还需要一个Endpoint，由于我们需要一个 WhatsApp 类型的，这是一个自定义的 Channel 类型，系统中肯定不会有现成的 Endpoint，所以我们使用 aws cli 工具创建一个。</p><p>首先创建一个 <em>test-endpoint.json</em> 文件，内容如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;ChannelType&#34;</span>: <span style=color:#e6db74>&#34;CUSTOM&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;Address&#34;</span>: <span style=color:#e6db74>&#34;8613800138000&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;Attributes&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;Interests&#34;</span>: [
+</span></span><span style=display:flex><span>      <span style=color:#e6db74>&#34;Technology&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#e6db74>&#34;Music&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#e6db74>&#34;Travel&#34;</span>
+</span></span><span style=display:flex><span>    ]
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;Metrics&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;technology_interest_level&#34;</span>: <span style=color:#ae81ff>9.0</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;music_interest_level&#34;</span>: <span style=color:#ae81ff>6.0</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;travel_interest_level&#34;</span>: <span style=color:#ae81ff>4.0</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>其中，Address 就是你要测试使用的手机号，需要在前面加上国家码（即86）。</p><p>然后使用 AWS Cli 工具运行：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>aws pinpoint update-endpoint --application-id f190affea10b4ce2b4a2cbbd85976c96 --profile MTProj --endpoint-
+</span></span><span style=display:flex><span>id test123 --endpoint-request file://test-endpoint.json
+</span></span></code></pre></div><p>其中，<em>&ndash;application-id</em> 后面是之前创建的pinpoint项目的id，<em>&ndash;profile</em> 是我自己使用的认证方式。执行后，成功的话，就会返回新建的 Endpoint id：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;MessageBody&#34;</span>: {
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;Message&#34;</span>: <span style=color:#e6db74>&#34;Accepted&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;RequestID&#34;</span>: <span style=color:#e6db74>&#34;b6e9a334-0d51-4b5e-9b87-4aecaad7c966&#34;</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>也可以通过命令获得endpoint信息：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>aws pinpoint get-endpoint --application-id f190affea10b4ce2b4a2cbbd85976c96  --endpoint-id test123 --profile MTProj
+</span></span></code></pre></div><h3 id=设置权限>设置权限</h3><p>最后，我们还需要合适的权限才能使用这个定制的渠道。</p><p>首先，我们需要知道它的调用逻辑，才能知道<em>谁</em>需要<em>什么</em>权限，来访问<em>谁</em>。在发送定制渠道的消息时，我们通过 API 创建一个 campaign 活动，在 campaign 里面创建一个动态的 Segment；它在执行的时候，会掉用 lambda 函数，而这个 Lambda 函数在执行的时候，又需要从 Secret Manager 读取 Token，所以它的调用关系如下：</p><p>pinpoint应用 -> lambda 函数 -> Secret Manager 对象。我们通过给这个 Lambda 函数设置一个 <em>Resource Policy</em>，来允许 Pinpoint 应用可以调用它，然后再给这个 Lambda 的role设置权限，让它能够访问 Secret Manager。</p><p>所以，先打开刚才创建的 Lambda 函数配置页面的 Permission 页：</p><p><img src=6-lambda-permission-resource-policy.jpg alt></p><p>在 Resource based policy的部分，添加一条permission：</p><p><img src=7-lambda-permission-resource-policy-permission.jpg alt></p><p>选择 AWS service，选择 Other，然后手动输入，其中 Principal 输入 <em>pinpoint.amazonaws.com</em>，Source ARN 填你创建的 Pinpoint 项目的 ARN，我这里最后用星号（*），表示我所有的Pinpoint项目都能调用这个 Lambda 。然后选择Action 为 <em>lambda:InvokeFunction</em>。</p><p>然后，找到这个 Lambda 函数使用的角色，为这个角色添加Policy，来让它能够访问 Secret Manager。在角色的Permission页面，添加一个 Inline Policy，策略内容如下：</p><p><img src=8-lambda-permission-role-policy-permission.jpg alt></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;Version&#34;</span>: <span style=color:#e6db74>&#34;2012-10-17&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;Statement&#34;</span>: [
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Action&#34;</span>: <span style=color:#e6db74>&#34;secretsmanager:GetSecretValue&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Resource&#34;</span>: <span style=color:#e6db74>&#34;arn:aws:secretsmanager:us-east-1:56xxxxxx027:secret:connect/facebook-S5G08O&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    ]
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Resource 的值就是我们之前在 Secret Manager 里创建的对象的 arn。</p><h2 id=通过-console-创建-campaign-测试>通过 Console 创建 Campaign 测试</h2><p>最后，我们在 Pinpoint 的console 页面，进入之前的项目，创建一个 Campaign 来测试这个新渠道消息。创建的时候，创建 Segment 的时候，我们需要创建一个 Segment，条件设置 Channel Type 为 custom，下面会出来预估的当前这个 Segment 条件下大概会有多少个Endpoint 会被触达。我们这里的测试环境只有一个 CUSTOM 类型的 Endpoint，所以只有1.</p><p><img src=9-pinpoint-create-campaign-1.jpg alt></p><p>下一步，我们需要选择之前创建的 Lambda 函数，以及使用过 <em>custom</em> 类型的Endpoints。</p><p><img src=10-pinpoint-create-campaign-2.jpg alt></p><p>然后下一步，选择立即开始，并最后保存这个 Campaign。</p><p>创建完成后，就会跳转到详情页，这个页面中，会展示这个活动圈选了几个 Endpoint，并触达了几个 Endpoint（这里的<em>触达</em>只是表示掉用了 Lambda 函数，至于 Lambda 函数是否成功执行，这里无法体现）。</p><div class="notices info"><p>注意：我们发送 Whatsapp 消息，使用定制的消息模板，并且模板中还使用变量，而这些变量，也需要通过 Campaign 传递到 Lambda 函数，然后在 API 中使用。
+但是，我们使用 Console 进行测试的时候，并没有传递任何参数，所以，实际上，我们通过 Console 测试的时候，Lambda 函数会执行失败，因为没有 <em>event.Data</em> 数据。所以，我们需要通过 API 调用的方式，才能测试带自定义内容的消息。</p></div><h2 id=通过-api-测试>通过 API 测试</h2><p>最后，我们来看一下使用过 JS sdk进行API调用的实例：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>ppClient</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>PinpointClient</span>({
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>region</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;us-east-1&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>credentials</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>fromCognitoIdentityPool</span>({
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>identityPoolId</span><span style=color:#f92672>:</span> <span style=color:#f92672>&lt;</span><span style=color:#a6e22e>the_identityPoolId</span><span style=color:#f92672>&gt;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>client</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>CognitoIdentityClient</span>({ <span style=color:#a6e22e>region</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;us-east-1&#39;</span> })
+</span></span><span style=display:flex><span>    })
+</span></span><span style=display:flex><span>  });
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>dataObj</span> <span style=color:#f92672>=</span> [
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;type&#34;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;body&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;parameters&#34;</span><span style=color:#f92672>:</span> [
+</span></span><span style=display:flex><span>        {<span style=color:#e6db74>&#34;type&#34;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;text&#34;</span>, <span style=color:#e6db74>&#34;text&#34;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;Tuohumai&#34;</span>},
+</span></span><span style=display:flex><span>        {<span style=color:#e6db74>&#34;type&#34;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;text&#34;</span>, <span style=color:#e6db74>&#34;text&#34;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34; Champion T Shirt&#34;</span>}
+</span></span><span style=display:flex><span>        ]
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    { 
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;type&#34;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;button&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;sub_type&#34;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;quick_reply&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;index&#34;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;0&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;parameters&#34;</span><span style=color:#f92672>:</span> [
+</span></span><span style=display:flex><span>        { <span style=color:#e6db74>&#34;type&#34;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;payload&#34;</span>, <span style=color:#e6db74>&#34;payload&#34;</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;button 0 clicked&#34;</span> }
+</span></span><span style=display:flex><span>        ]
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  ]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>customMessage</span> <span style=color:#f92672>=</span> { <span style=color:#a6e22e>templateName</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;ordertimeoutnotification&#39;</span>, <span style=color:#a6e22e>params</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>dataObj</span> }
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>command</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>CreateCampaignCommand</span>({
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>ApplicationId</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;f190affea10b4ce2b4a2cbbd85976c96&#39;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>WriteCampaignRequest</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>Name</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;test-campaign-wa-message-with-api&#39;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>Description</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;campaign Desc&#39;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>SegmentId</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;b5b50ccb81644a3390751ee1e4fe27ac&#39;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>Schedule</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>StartTime</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;IMMEDIATE&#34;</span>
+</span></span><span style=display:flex><span>      },
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>MessageConfiguration</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>CustomMessage</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>          <span style=color:#a6e22e>Data</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>JSON</span>.<span style=color:#a6e22e>stringify</span>(<span style=color:#a6e22e>customMessage</span>),
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>      },
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>CustomDeliveryConfiguration</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>DeliveryUri</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;arn:aws:lambda:us-east-1:568xxxxxx9027:function:mt_pinpoint_whatsapp_custom_channel&#39;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>EndpointTypes</span><span style=color:#f92672>:</span> [<span style=color:#e6db74>&#34;CUSTOM&#34;</span>]
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  });
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>response</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>ppClient</span>.<span style=color:#a6e22e>send</span>(<span style=color:#a6e22e>command</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#34;Success&#34;</span>, <span style=color:#a6e22e>response</span>);
+</span></span></code></pre></div><p>在这个代码中，我们先创建了自定义消息所需的参数 <em>dataObj</em>，它跟我们在 WhatsApp 中创建的消息有关，它包括消息内容中要替换的变量 <em>parameters</em>，也有 Whatsapp 里面展示时添加的按钮，以及这个按钮的动作，这都是 WhatsApp 消息所需的内容，跟接口无关。然后我们将这个对象转成 String 以后，放到 <em>MessageConfiguration.CustomMessage.Data</em> 中。</p><p><em>WriteCampaignRequest</em> 是使用接口创建 Campaign 的对象。通过这个接口，就可以创建一个立即运行的 Campaign，这样就能在 WhatsApp 应用中看到通知的消息了。</p><footer class=footline></footer></div></div><div id=navigation><a class="nav nav-prev" href=../../pinpoint/ title=Pinpoints><i class="fa fa-chevron-left"></i></a>
+<a class="nav nav-next" href=../../connect/ title="Amazon Connect" style=margin-right:0><i class="fa fa-chevron-right"></i></a></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=../../js/clipboard.min.js?1667984276></script>
+<script src=../../js/perfect-scrollbar.min.js?1667984276></script>
+<script src=../../js/perfect-scrollbar.jquery.min.js?1667984276></script>
+<script src=../../js/jquery.sticky.js?1667984276></script>
+<script src=../../js/featherlight.min.js?1667984276></script>
+<script src=../../js/highlight.pack.js?1667984276></script>
+<script>hljs.initHighlightingOnLoad()</script><script src=../../js/modernizr.custom-3.6.0.js?1667984276></script>
+<script src=../../js/learn.js?1667984276></script>
+<script src=../../js/hugo-learn.js?1667984276></script>
+<script src=../../mermaid/mermaid.js?1667984276></script>
+<script>mermaid.initialize({startOnLoad:!0})</script></body></html>
