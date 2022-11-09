@@ -147,6 +147,10 @@ exports.handler = async (event) => {
 
 即，把系统属性 *$.Agent.UserName* 加到用户属性中。这样我们就能在之后执行的 Lambda 函数中拿到客服信息。
 
+## 权限说明
+
+通过 *disconnect flow* 实现的会话后评分反馈的内容，对于支持当前会话的客服来说，是不可见的，即使对于 *CallCenterManager* 角色的用户也不可见，只有管理员才能通过会话历史查看其内容。
+
 ## 测试
 
 用管理员登录 Connect，从 Dashboard 中点击 “Test chat” 进入测试页面，如果你的默认流程不是刚才修改的流程，还需要修改 *test setting* 设置要测试的流程。
