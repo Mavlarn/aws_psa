@@ -20,7 +20,7 @@ keywords : [
 
 ## Amazon Pinpoint 用户行为分析
 
-Amazon Pinpoint 的其中一个功能是收集客户端的用户行为，并发送到 AWS Pinpoint 服务中进行汇总分析，并结合动态 Segment 实现用户圈选，以及出发用户旅程（Journey），从而实现自动化的营销功能。
+Amazon Pinpoint 的其中一个功能是收集客户端的用户行为，并发送到 AWS Pinpoint 服务中进行汇总分析，并结合动态 Segment 实现用户圈选，以及触发用户旅程（Journey），从而实现自动化的营销功能。
 
 ## Pinpoint Analytics 使用
 
@@ -29,7 +29,7 @@ Amazon Pinpoint 的其中一个功能是收集客户端的用户行为，并发�
 1. 使用 [Pinpoint JS Sdk](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Pinpoint.html)。这种方式跟大部分 JS 库的使用类似，就是引入该JS库，在 JS 中初始化 Pinpoint Client，初始化时需要传递认证信息。这样就能在页面中通过 JS 库调用 Pinpoint 的 API 实现各种功能，包括记录事件、创建Segment、Campaign等。
 2. 使用 [Amplify 工具](https://docs.amplify.aws/)。Amplify 是一系列命令行工具和 JS 库的集合。使用 Amplify，我们可以通过命令行来给我们现有的前端应用添加 AWS 服务，并通过提供的 Amplify 库与后端的 AWS 服务进行交互。例如访问后端的 S3 文件存储服务，DynamoDB 数据库，API Gateway 等等。
 
-在本文中，我们就介绍如何使用 Amplify 来为我们的前端应用 添加用户分析的功能，并通过用户属性和 Pinpoint 的 Segment 功能，实现动态圈选用户。
+在本文中，我们就介绍如何使用 Amplify 来为我们的前端应用添加用户分析的功能，并通过用户属性和 Pinpoint 的 Segment 功能，实现动态圈选用户，为后续的 Campaign 或者 用户 Journey 提供支持。
 
 ## 实现
 
@@ -100,11 +100,11 @@ CREATE_COMPLETE amplify-amplifyjsapp-dev-133145 AWS::CloudFormation::Stack Mon N
 Your project has been successfully initialized and connected to the cloud!
 ```
 
-成功执行以后，它将在 AWS 创建几个角色，AuthRole 和 UnauthRole，用于已登陆的用户和匿名用户通过 *Cognito Identity Pool* 来访问 AWS 后端服务。
+成功执行以后，它将在 AWS 创建几个角色，AuthRole 和 UnauthRole，用于已登陆的用户和匿名用户通过 *Cognito Identity Pool* 来访问 AWS 后端服务。由于我们现在还没有添加任何的其他服务，所以当我们查看这两个角色的 Policy 的时候，不会看到其他权限设置。
 
 ### 添加 analytics 服务
 
-然后，我们将添加 Pinpoint analytics 服务。在根目录运行下面的命令：
+然后，我们将添加 Pinpoint analytics 服务，这个服务对应 AWS 的 Pinpoint 服务的事件分析功能。在根目录运行下面的命令：
 ```bash
 amplify add analytics
 ```
@@ -112,7 +112,7 @@ amplify add analytics
 ```bash
 amplify push
 ```
-运行 Push 以后，Amplify将会为我们生成 CloudFormation 文件，并用该文件创建后台的 Pinpoint 资源。
+运行 Push 以后，Amplify将会按照之前命令行的配置，为我们生成 CloudFormation 文件，并用该文件创建后台的 Pinpoint 资源。
 
 如果我们已经创建好了 Pinpoint 的项目，想使用现有的项目的话，可以忽略 *add analytics* 的步骤，直接 *push* 即可，之后可以通过修改 json 配置来使用现有的 Pinpoint 项目。
 
@@ -130,9 +130,7 @@ const awsmobile = {
 export default awsmobile;
 ```
 
-其中，*aws_cognito_identity_pool_id* 是 Amplify 为我们创建的 identity pool 的 ID，*aws_mobile_analytics_app_id* 是 Amplify 为我们创建的项目的 ID。
-
-如果要使用现有的 Pinpoint 项目，甚至现有的 *Cognito Identity Pool*，可以修改这个文件，使用现有资源的 ID 即可。
+其中，*aws_cognito_identity_pool_id* 是 Amplify 为我们创建的 identity pool 的 ID，*aws_mobile_analytics_app_id* 是 Amplify 为我们创建的项目的 ID。如果要使用现有的 Pinpoint 项目，甚至现有的 *Cognito Identity Pool*，可以修改这个文件，使用现有资源的 ID 即可。
 
 ### 初始化 Amplify Analytics
 
@@ -142,7 +140,7 @@ export default awsmobile;
 3. 使用 Webpack 将js文件打包成一个 bundle.js 文件
 4. 在真实项目的html页面中，引入该 bundle 文件，并通过 script 脚本在需要在页面或按钮上记录事件。
 
-所以，我们的 app.js 文件代码如下：
+所以，我们按照上面文档创建一个js应用，并创建一些文件，其中 app.js 文件代码如下：
 ```js
 import { Amplify, Analytics, Auth } from "aws-amplify";
 import awsExports from './aws-exports'
@@ -195,7 +193,11 @@ window.Amplify = Amplify
 window.Analytics = Analytics
 ```
 
-其他的代码都跟上面的文档中一样，然后运行 *npm dev*，就可以编译生成 bundle js文件在 dist 目录中，我们就可以在其他页面引入这个文件，并记录事件：
+代码中的设置以及其作用以及在代码中注释，这里就不再赘述。
+
+### 记录事件
+
+项目的其他文件的代码都跟上面的文档中一样，完成后运行 *npm dev*，就可以编译生成 bundle js文件在 dist 目录中，我们就可以在其他页面引入这个文件，并记录事件：
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -214,14 +216,45 @@ window.Analytics = Analytics
     <script src="main.bundle.js"></script>
     <script>
       function recordEvent() {
-        Analytics.record({ name: 'Custom_event' });
+        // 由于我们已经通过 window.Analytics = Analytics 将它作为全局对象，所以可以直接调用它的方法。
+        Analytics.record({ name: 'Custom_event' }); // 记录自定义事件 Custom_event
       }
     </script>
   </body>
 </html>
 ```
 
-提供的现成的 js 项目，可以参考 [Github](https://github.com/Mavlarn/pinpoint-amplify-js-app)。读者可以直接从这个实例心目中的 dist 文件中找到已经打包好的 hundle.js 文件，然后修改其中的 aws_mobile_analytics_app_id 等配置来直接使用。
+这个 js 应用实例的完整代码，可以参考 [Github 上的实例项目](https://github.com/Mavlarn/pinpoint-amplify-js-app)。读者可以直接从这个实例项目中的 dist 文件中找到已经打包好的 hundle.js 文件，然后修改其中的 aws_mobile_analytics_app_id 等配置来直接使用。
+
+### 更新 Endpoint 属性
+
+我们提到我们使用 Pinpoint Analytics 的事件分析功能，一个主要目的就是结合 Campaign 和 Journey 功能，实现动态的选择所需的用户。例如在一个 Campaign 活动中，我们想要选择一天之内注册的用户，那我们就可以给用户的 Endpoint 设置一个 registeredDate，值就是注册时间，然后在 Campaign 的 Segment 里，创建一个动态 Segment，其条件就是注册时间晚于一天前。
+
+所以，我们可以在应用中适当的地方更新用户的 Endpoint：
+```html
+<html lang="en">
+  <body>
+    <div class="app">
+      <div class="app-body">
+        <h1>Update Endpoint</h1>
+        <button onclick="updateEndpoint()">Update Endpoint</button> 
+      </div>
+    </div>
+    <script src="main.bundle.js"></script>
+    <script>
+      function updateEndpoint() {
+        Analytics.updateEndpoint({
+          attributes: {
+            registeredDate: [new Date()]
+          }
+        })
+      }
+    </script>
+  </body>
+</html>
+```
+
+在该实例的 html 中，我们引入了之前打包的 hundle.js 文件，当用户注册成功后，就可以调用 `Analytics.updateEndpoint(...)` 方法，并设置 `attributes` 属性，它是一个对象，它的值会被添加到当前的 Endpoint 的属性当中。我们可以使用这样的方式来给当前用户设置各种业务标签，然后用这些标签来过滤用户。
 
 ## 检查 Pinpoint
 
@@ -238,7 +271,7 @@ window.Analytics = Analytics
 
 ### 创建动态 Segment
 
-我们在实例中，通过 *updateEndpoint* 更新了Endpoint 的属性值，也可以更新用户的属性，或者 Metrics，这些都能用来作为创建动态 Segment 的条件。
+我们在实例中，通过 *updateEndpoint* 更新了Endpoint 的属性值，也可以更新用户属性（userAttributes），或者 Metrics，这些都能用来作为创建动态 Segment 的条件。
 ```js
 Analytics.updateEndpoint({
     attributes: {
@@ -254,8 +287,10 @@ Analytics.updateEndpoint({
 })
 ```
 
+其中 *attributes*、*userAttributes* 属性都是 key-value 的对象，它们的值都必须是一个列表。而 metrics 顾名思义，就是一个指标，值应该都是数值类型。
+
 然后就可以在创建 Segment 的时候，使用这些属性来动态创建 Segment，按需选出想要的用户：
 ![](2-pinpoint-segment-based-on-endpoint.jpg)
 
-这里，我们使用用户的注册时间晚于11月11号这天作为条件，选出了刚才的实例中测试的那个用户的 Endpoint，这样就可以结合 Campaign 或 Journey 进行其他的自定义的触达活动。
+这里，我们使用用户的注册时间晚于11月11号这天作为条件，选出了刚才的实例中测试的那个用户的 Endpoint，这样就可以结合 Campaign 或 Journey 进行其他的自定义的触达活动。创建 Campaign 或 Journey 的其他步骤不是本文的内容，就不做介绍，需要的可以参考相关文档。
 
