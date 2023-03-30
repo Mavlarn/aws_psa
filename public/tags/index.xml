@@ -6,13 +6,103 @@
     <description>Recent content in Tags on AWS China Partner Workshop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 12 Oct 2022 11:13:17 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 14 Nov 2022 10:05:51 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Amazon Pinpoint</title>
+      <link>/tags/amazon-pinpoint/</link>
+      <pubDate>Mon, 14 Nov 2022 10:05:51 +0800</pubDate>
+      
+      <guid>/tags/amazon-pinpoint/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Analytics</title>
+      <link>/tags/analytics/</link>
+      <pubDate>Mon, 14 Nov 2022 10:05:51 +0800</pubDate>
+      
+      <guid>/tags/analytics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Endpoint</title>
+      <link>/tags/endpoint/</link>
+      <pubDate>Mon, 14 Nov 2022 10:05:51 +0800</pubDate>
+      
+      <guid>/tags/endpoint/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Channel</title>
+      <link>/tags/channel/</link>
+      <pubDate>Wed, 09 Nov 2022 10:05:51 +0800</pubDate>
+      
+      <guid>/tags/channel/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title> Contact Flow</title>
+      <link>/tags/contact-flow/</link>
+      <pubDate>Fri, 21 Oct 2022 11:15:17 +0800</pubDate>
+      
+      <guid>/tags/contact-flow/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Amazon Connect</title>
       <link>/tags/amazon-connect/</link>
-      <pubDate>Wed, 12 Oct 2022 11:13:17 +0800</pubDate>
+      <pubDate>Fri, 21 Oct 2022 11:15:17 +0800</pubDate>
       
       <guid>/tags/amazon-connect/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Lex</title>
+      <link>/tags/lex/</link>
+      <pubDate>Fri, 21 Oct 2022 11:15:17 +0800</pubDate>
+      
+      <guid>/tags/lex/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SAML</title>
+      <link>/tags/saml/</link>
+      <pubDate>Fri, 14 Oct 2022 11:13:17 +0800</pubDate>
+      
+      <guid>/tags/saml/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Solution</title>
+      <link>/tags/solution/</link>
+      <pubDate>Fri, 14 Oct 2022 11:13:17 +0800</pubDate>
+      
+      <guid>/tags/solution/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gaming</title>
+      <link>/tags/gaming/</link>
+      <pubDate>Wed, 12 Oct 2022 17:13:17 +0800</pubDate>
+      
+      <guid>/tags/gaming/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Neptune</title>
+      <link>/tags/neptune/</link>
+      <pubDate>Wed, 12 Oct 2022 17:13:17 +0800</pubDate>
+      
+      <guid>/tags/neptune/</guid>
       <description></description>
     </item>
     
@@ -22,15 +112,6 @@
       <pubDate>Wed, 12 Oct 2022 11:13:17 +0800</pubDate>
       
       <guid>/tags/authing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>SAML</title>
-      <link>/tags/saml/</link>
-      <pubDate>Wed, 12 Oct 2022 11:13:17 +0800</pubDate>
-      
-      <guid>/tags/saml/</guid>
       <description></description>
     </item>
     

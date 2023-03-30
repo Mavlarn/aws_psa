@@ -2,37 +2,91 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/blogs/configure-amazon-connect-keycloak-with-saml-sso/</loc>
+    <loc>/pinpoint/using-pinpoint-event-analytics-in-plain-js-webapp/</loc>
+    <lastmod>2022-11-14T18:05:51+08:00</lastmod>
+  </url><url>
+    <loc>/pinpoint/customer-engagement-using-amazon-pinpoint-custom-channel/</loc>
+    <lastmod>2022-11-09T18:05:51+08:00</lastmod>
+  </url><url>
+    <loc>/connect/configure-amazon-connect-keycloak-with-saml-sso/</loc>
     <lastmod>2022-10-09T18:05:51+08:00</lastmod>
+  </url><url>
+    <loc>/connect/</loc>
+    <lastmod>2022-10-21T11:15:17+08:00</lastmod>
+  </url><url>
+    <loc>/connect/configure-amazon-connect-and-authing-with-saml-sso/</loc>
+    <lastmod>2022-10-12T11:13:17+08:00</lastmod>
+  </url><url>
+    <loc>/connect/post-review-with-contact-flow/</loc>
+    <lastmod>2022-10-21T11:15:17+08:00</lastmod>
+  </url><url>
+    <loc>/connect/connect-plus-solution-design/</loc>
+    <lastmod>2022-10-14T11:13:17+08:00</lastmod>
+  </url><url>
+    <loc>/gaming/</loc>
+    <lastmod>2022-10-12T17:13:17+08:00</lastmod>
+  </url><url>
+    <loc>/gaming/using-neptune-graph-database-for-anticheat-in-gaming/</loc>
+    <lastmod>2022-10-12T17:13:17+08:00</lastmod>
   </url><url>
     <loc>/workshops/</loc>
   </url><url>
-    <loc>/blogs/configure-amazon-connect-and-authing-with-saml-sso/</loc>
-    <lastmod>2022-10-12T11:13:17+08:00</lastmod>
-  </url><url>
-    <loc>/blogs/</loc>
-    <lastmod>2022-10-12T11:13:17+08:00</lastmod>
-  </url><url>
     <loc>/</loc>
-    <lastmod>2022-10-12T11:13:17+08:00</lastmod>
+    <lastmod>2022-11-14T18:05:51+08:00</lastmod>
     <priority>0</priority>
   </url><url>
-    <loc>/tags/amazon-connect/</loc>
-    <lastmod>2022-10-12T11:13:17+08:00</lastmod>
+    <loc>/tags/amazon-pinpoint/</loc>
+    <lastmod>2022-11-14T18:05:51+08:00</lastmod>
   </url><url>
-    <loc>/categories/amazon-connect/</loc>
-    <lastmod>2022-10-12T11:13:17+08:00</lastmod>
+    <loc>/categories/amazon-pinpoint/</loc>
+    <lastmod>2022-11-14T18:05:51+08:00</lastmod>
   </url><url>
-    <loc>/tags/authing/</loc>
-    <lastmod>2022-10-12T11:13:17+08:00</lastmod>
+    <loc>/tags/analytics/</loc>
+    <lastmod>2022-11-14T18:05:51+08:00</lastmod>
   </url><url>
     <loc>/categories/</loc>
-    <lastmod>2022-10-12T11:13:17+08:00</lastmod>
+    <lastmod>2022-11-14T18:05:51+08:00</lastmod>
   </url><url>
-    <loc>/tags/saml/</loc>
-    <lastmod>2022-10-12T11:13:17+08:00</lastmod>
+    <loc>/tags/endpoint/</loc>
+    <lastmod>2022-11-14T18:05:51+08:00</lastmod>
+  </url><url>
+    <loc>/pinpoint/</loc>
+    <lastmod>2022-11-14T18:05:51+08:00</lastmod>
   </url><url>
     <loc>/tags/</loc>
+    <lastmod>2022-11-14T18:05:51+08:00</lastmod>
+  </url><url>
+    <loc>/tags/channel/</loc>
+    <lastmod>2022-11-09T18:05:51+08:00</lastmod>
+  </url><url>
+    <loc>/tags/contact-flow/</loc>
+    <lastmod>2022-10-21T11:15:17+08:00</lastmod>
+  </url><url>
+    <loc>/tags/amazon-connect/</loc>
+    <lastmod>2022-10-21T11:15:17+08:00</lastmod>
+  </url><url>
+    <loc>/categories/amazon-connect/</loc>
+    <lastmod>2022-10-21T11:15:17+08:00</lastmod>
+  </url><url>
+    <loc>/tags/lex/</loc>
+    <lastmod>2022-10-21T11:15:17+08:00</lastmod>
+  </url><url>
+    <loc>/tags/saml/</loc>
+    <lastmod>2022-10-14T11:13:17+08:00</lastmod>
+  </url><url>
+    <loc>/tags/solution/</loc>
+    <lastmod>2022-10-14T11:13:17+08:00</lastmod>
+  </url><url>
+    <loc>/tags/gaming/</loc>
+    <lastmod>2022-10-12T17:13:17+08:00</lastmod>
+  </url><url>
+    <loc>/tags/neptune/</loc>
+    <lastmod>2022-10-12T17:13:17+08:00</lastmod>
+  </url><url>
+    <loc>/categories/neptune/</loc>
+    <lastmod>2022-10-12T17:13:17+08:00</lastmod>
+  </url><url>
+    <loc>/tags/authing/</loc>
     <lastmod>2022-10-12T11:13:17+08:00</lastmod>
   </url><url>
     <loc>/tags/keycloak/</loc>

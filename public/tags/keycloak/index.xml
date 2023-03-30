@@ -9,14 +9,15 @@
     <lastBuildDate>Sun, 09 Oct 2022 18:05:51 +0800</lastBuildDate><atom:link href="/tags/keycloak/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>配置Amazon Connect使用Keycloak SAML进行单点登录</title>
-      <link>/blogs/configure-amazon-connect-keycloak-with-saml-sso/</link>
+      <link>/connect/configure-amazon-connect-keycloak-with-saml-sso/</link>
       <pubDate>Sun, 09 Oct 2022 18:05:51 +0800</pubDate>
       
-      <guid>/blogs/configure-amazon-connect-keycloak-with-saml-sso/</guid>
+      <guid>/connect/configure-amazon-connect-keycloak-with-saml-sso/</guid>
       <description>Amazon Connect Amazon Connect 是云原生的智能呼叫中心服务，它按用户的使用量（电话呼入的时间、以及处理的消息数）进行付费，能够在一天之内搭建客户服务中心，并实现智能流程，所以是企业接入用户的一个非常好的选择。
 Amazon Connect 支持集中用户认证，1) 内置的用户系统 2) Active Directory 3) 基于SAML2.0 的认证服务器。
 如果客户想要在自己的CRM系统，或者客服工作台使用 Amazon Connect，就需要使用 AD 或，基于SAML2.0 的认证服务器，来实现与现有系统的单点登录（SSO）。
 在本文中，我们将介绍如何使用 Keycloak 作为认证服务，通过 SAML 协议为 Amazon Connect 提供单点登录功能。
+如果想要使用 Okta、Azure AD 等认证服务器，请参考 Amazon Connect SSO Setup Workshop。
 Keycloak 与 SAML Keycloak Keycloak 是一款开源的身份与访问控制软件，提供单点登录 (SSO) 功能，支持 OpenID、 OAuth 2.0、SAML 2.0 等标准协议。Keycloak 提供可自定义的用户界面，用于登录、注册和账户管理等。而且，客户可以使用 Keycloak 并将身份验证委派给现有的 LDAP 和 Azure Active Directory，或第三方身份提供商，实现灵活的认证服务。
 SAML 2.0 协议 SAML，即安全断言标记语言（Security Assertion Markup Language）是一个基于 XML 的开源标准数据格式，通过在各方之间交换身份验证和授权数据，实现跨域的单点登录。
 SAML协议中，包含两个主体：

@@ -6,13 +6,31 @@
     <description>Recent content in Categories on AWS China Partner Workshop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 12 Oct 2022 11:13:17 +0800</lastBuildDate><atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 14 Nov 2022 10:05:51 +0800</lastBuildDate><atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Amazon Pinpoint</title>
+      <link>/categories/amazon-pinpoint/</link>
+      <pubDate>Mon, 14 Nov 2022 10:05:51 +0800</pubDate>
+      
+      <guid>/categories/amazon-pinpoint/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Amazon Connect</title>
       <link>/categories/amazon-connect/</link>
-      <pubDate>Wed, 12 Oct 2022 11:13:17 +0800</pubDate>
+      <pubDate>Fri, 21 Oct 2022 11:15:17 +0800</pubDate>
       
       <guid>/categories/amazon-connect/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Neptune</title>
+      <link>/categories/neptune/</link>
+      <pubDate>Wed, 12 Oct 2022 17:13:17 +0800</pubDate>
+      
+      <guid>/categories/neptune/</guid>
       <description></description>
     </item>
     

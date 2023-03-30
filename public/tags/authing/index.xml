@@ -9,10 +9,10 @@
     <lastBuildDate>Wed, 12 Oct 2022 11:13:17 +0800</lastBuildDate><atom:link href="/tags/authing/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>配置Amazon Connect使用 Authing SAML进行单点登录</title>
-      <link>/blogs/configure-amazon-connect-and-authing-with-saml-sso/</link>
+      <link>/connect/configure-amazon-connect-and-authing-with-saml-sso/</link>
       <pubDate>Wed, 12 Oct 2022 11:13:17 +0800</pubDate>
       
-      <guid>/blogs/configure-amazon-connect-and-authing-with-saml-sso/</guid>
+      <guid>/connect/configure-amazon-connect-and-authing-with-saml-sso/</guid>
       <description>Authing 是在云上为企业和开发者提供专业的身份认证和授权服务，也支持 SAML 2.0 协议。本文介绍如何使用 Authing 认证服务，来实现 Amazon Connect 的单点登录。
 对于，SAML 协议以及使用 SAML 协议进行单点登录的详解，可以参考另一篇文章 配置 Amazon Connect 使用 Keycloak SAML 进行单点登录。在本文中，就只是简单介绍在 Authing 中配置时需要设置和注意的几个地方。
 创建 Authing 应用 首先需要在 Authing 里面创建一个应用，具体过程参考官方文档：成为 SAML2 身份源。即创建一个应用，然后在这个应用中启用 SAML，在配置当中，配置 ACS 地址为 https://signin.aws.amazon.com/saml。回调地址就是 https://ap-northeast-2.console.aws.amazon.com/connect/federate/d47fc0b2-83c2-4af9-b78a-6d312739b4a3 这样的地址。
