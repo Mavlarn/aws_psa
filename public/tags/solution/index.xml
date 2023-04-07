@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Solution on AWS China Partner Workshop</title>
+    <link>/tags/solution/</link>
+    <description>Recent content in Solution on AWS China Partner Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 14 Oct 2022 11:13:17 +0800</lastBuildDate><atom:link href="/tags/solution/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Amazon Connect&#43;&#43; 解决方案设计</title>
+      <link>/connect/connect-plus-solution-design/</link>
+      <pubDate>Fri, 14 Oct 2022 11:13:17 +0800</pubDate>
+      
+      <guid>/connect/connect-plus-solution-design/</guid>
+      <description>SmartOOP Auth Cognito user pool user management Cognito identity pool to access DynamoDB, AppStream PostAuth create Agent item in DynamoDB UserGroups Admin Manager Agent GraphQL API Desktops createDesktop listDesktop assignDesktop initDesktop Agents createAgent updateAgent deleteAgent listAgent REST API admin api: /admin
+function: AdminFunction
+Messages listMessage getOneMessage replyMessage AB III Value prodpotion(方案的价值) cdk deploy &amp;ndash;hotswap</description>
+    </item>
+    
+  </channel>
+</rss>

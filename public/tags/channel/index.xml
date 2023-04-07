@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Channel on AWS China Partner Workshop</title>
+    <link>/tags/channel/</link>
+    <description>Recent content in Channel on AWS China Partner Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 09 Nov 2022 10:05:51 +0800</lastBuildDate><atom:link href="/tags/channel/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 Amazon Pinpoint 的Custom Channel给用户发送 Whatsapp 消息</title>
+      <link>/pinpoint/customer-engagement-using-amazon-pinpoint-custom-channel/</link>
+      <pubDate>Wed, 09 Nov 2022 10:05:51 +0800</pubDate>
+      
+      <guid>/pinpoint/customer-engagement-using-amazon-pinpoint-custom-channel/</guid>
+      <description>Amazon Pinpoint 用户触达 Amazon Pinpoint 通常用来通过 SMS 以及邮件的方式来给用户发通知，我们可以创建 Campaign，来动态的给圈选的用户在指定的时间、或某个事件发生的情况下，给用户发送指定模板的消息。更复杂的，我们还可以创建用户旅程的流程，来给用户发消息。
+除了 SMS 和邮件，Pinpoint 还提供了 Push-notification，in-app messaging 的消息，我们甚至还可以通过 Lambda 还创建自定义的消息渠道。本文我们就来看一下如何使用 Lambda 创建自定义的渠道（custom channel）并使用它来发送消息给用户。
+场景描述和前提 本文中，我们希望给用户的 Whatsapp 账号发送消息，实现原理实际上就是在 Lambda 函数内通过调用 Whatsapp 的 API 来发消息。这就需要几个前提：
+创建并配置 Whatsapp Whatsapp 是 Facebook 旗下的产品，它提供 Business Platform API，可以用来直接发送 WhatsApp 消息，而无需通过类似 Twilio 这样的服务。开通和配置的过程不是本文的内容，这里就不做说明。我们需要能够通过 API 调用来发消息。配置完成后，可以同下面的页面来测试：
+它通过临时的 Token 使用 API 发消息；这里的 Phone number ID 是我们的注册的 Business 账号下使用的电话的 Id；To 就是我们要发送消息的对象。
+发送消息后，我们就可以在网页版的 WhatsApp 应用，或手机应用上看到收到的测试消息。
+验证消息接收无误以后，就可以使用 API 调用发送消息了。
+获取 app token 从上面的测试接口页面，我们可以知道测试接口需要几个参数：
+token： 即 Facebook app token，在 Facebook business platform 创建，需要保证这个token具有 WhatsApp api的权限。 Phone number ID：即发消息的账号的Id。 创建 template 根据 WhatsApp 的机制，我们需要先创建一个消息模板，然后使用该模板发送消息。所以我们需要创建一个 template：</description>
+    </item>
+    
+  </channel>
+</rss>
