@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Neptune on AWS China Partner Workshop</title>
+    <link>/categories/neptune/</link>
+    <description>Recent content in Neptune on AWS China Partner Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 12 Oct 2022 17:13:17 +0800</lastBuildDate><atom:link href="/categories/neptune/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>利用Neptune图数据库实现游戏中的反欺诈</title>
+      <link>/gaming/using-neptune-graph-database-for-anticheat-in-gaming/</link>
+      <pubDate>Wed, 12 Oct 2022 17:13:17 +0800</pubDate>
+      
+      <guid>/gaming/using-neptune-graph-database-for-anticheat-in-gaming/</guid>
+      <description>图数据库介绍 游戏中的欺诈场景 图数据在反欺诈场景的使用 Amazon Neptune服务介绍 解决方案架构 部署与实现 数据模型设计 数据准备与上传到 S3 导入数据到 Neptune 通过 S3 的时间通知，在有数据文件的时候，导入到 Neptune
+提供 Lmabda 函数
+使用 Notebook 即 Gremlin 进行查询 Identity Resolution</description>
+    </item>
+    
+  </channel>
+</rss>
