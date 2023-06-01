@@ -360,11 +360,32 @@ http://localhost:8080/realms/AWSDemo/protocol/saml/descriptor
 
 确认后，该组就被赋予这个角色，所有这个组中的成员也都具有这个角色了。而这个角色的命名方式： *<role-arn>,<saml-provdier-arn>* ，也能映射到 AWS 内部的角色，从而让通过 Keycloak 登录的用户能够访问 Connect 服务。
 
+#### 退出设置
+
+最后，我们还需要设置退出，这样，保证从Keycloak里面退出的时候，也能够从 Connect 里面退出。
+
+首先，进入 Keycloak 的 client 的设置界面：
+
+![](keycloak_10-1_client_setting_logout.jpg)
+
+保证 “Logout settings” 的勾选项是勾上的状态：
+
+![](keycloak_10-2_client_setting_logout_option.jpg)
+
+然后进入 “Advance” tab页，在 “Logout Service POST Binding URL”输入退出的URL。Connect的退出 URL 就是在Connect的域名之后，加上 “/connect/logout”。
+
+![](keycloak_10-3_client_logout_advance_logout.jpg)
+
+
 ### 测试验证
 
-值此为止，配置已经完成，我们可以访问 *http://localhost:8080/realms/AWSDemo/protocol/saml/clients/aws_connect* ，在弹出的页面输入管理员的用户名（即刚才创建的mavlarn）和密码，成功后就会跳转到 Amazon Connect 页面。其中 *AWSDemo* 是创建的 Realm，*aws_connect* 是我们创建的 Client。
+到此为止，配置已经完成，我们可以访问 *http://localhost:8080/realms/AWSDemo/protocol/saml/clients/aws_connect* ，在弹出的页面输入管理员的用户名（即刚才创建的mavlarn）和密码，成功后就会跳转到 Amazon Connect 页面。其中 *AWSDemo* 是创建的 Realm，*aws_connect* 是我们创建的 Client。
 
 如果想从 Keycloak 退出，可以进入 Account 页面 *http://localhost:8080/realms/AWSDemo/account*， 点击 *Signout* 退出。
+
+### 测试退出
+
+为了测试退出，我们在浏览器中，在两个tab中分别打开 Keycloak 的account页面，和connect页面，URL是 *http://localhost:8080/realms/AWSDemo/account* 和 *http://localhost:8080/realms/AWSDemo/protocol/saml/clients/aws_connect* 。然后，从 Keycloak 的account页面右上角点击退出，然后在Connect的页面尝试进行操作，他会跳转到session失效的错误页面，这就说明，当我们在Keycloak里面退出以后，Connect里面也实现了退出。
 
 ### 创建客服用户
 
